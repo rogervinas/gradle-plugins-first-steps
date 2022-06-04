@@ -1,3 +1,5 @@
+[![CI](https://github.com/rogervinas/gradle-plugins-first-steps/actions/workflows/gradle.yml/badge.svg?branch=main)](https://github.com/rogervinas/gradle-plugins-first-steps/actions/workflows/gradle.yml)
+
 # First Steps Developing Custom Gradle Plugins
 
 Work in progress!
