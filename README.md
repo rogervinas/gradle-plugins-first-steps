@@ -22,6 +22,8 @@ Let's follow these steps:
 2. [Create plugins in the **buildSrc** module](#buildsrc-project)
 3. [Create plugins in a standalone project](#standalone-project)
 
+![gradle-plugins-first-steps](doc/gradle-plugins-first-steps.png)
+
 In this demo we will use a sample multi-module **Gradle** project named `my-gradle-project` with two modules and a custom `hello` task defined as:
 ```kotlin
 tasks.create("hello") {
@@ -32,8 +34,6 @@ tasks.create("hello") {
 ```
 
 So we can simply execute `./gradlew hello` and check all the plugins that are applied. 
-
-![gradle-plugins-first-steps](doc/gradle-plugins-first-steps.png)
 
 ### Build Script
 
