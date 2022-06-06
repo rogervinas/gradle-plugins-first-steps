@@ -37,7 +37,7 @@ So we can simply execute `./gradlew hello` and check all the plugins that are ap
 
 ### Build Script
 
-As a first step, we can create **Gradle** plugins directly on our build script. This is enough if we do not have to reuse them outside the build script they are defined in.
+As a first step, we can define plugins directly on our build script. This is enough if we do not have to reuse them outside the build script they are defined in.
 
 #### Build Script settings plugin
 
@@ -83,12 +83,90 @@ Again this example plugin only prints a line whenever is applied. A real plugin 
 
 Try it running `./gradlew hello` and it should print these lines:
 ```
+> Configure project :
 Plugin MyBuildProjectPlugin applied on my-gradle-project
 Plugin MyBuildProjectPlugin applied on my-module-1
 Plugin MyBuildProjectPlugin applied on my-module-2
 ```
 
 ### BuildSrc Project
+
+As a second step, we can define project plugins in a special module named **buildSrc**. All plugins defined there will be **only** visible to every build script within the project.
+
+But most important, we can add tests! 🤩
+
+First we create **buildSrc** module under `my-gradle-project` using [**Gradle init** and the **kotlin-gradle-plugin** template](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:kotlin_gradle_plugin)
+
+Then we register it in **buildSrc** > `build.gradle.kts`, giving it an `id`:
+```kotlin
+gradlePlugin {
+    plugins {
+        create("my-buildsrc-project-plugin") {
+            id = "com.rogervinas.my-buildsrc-project-plugin"
+            implementationClass = "com.rogervinas.MyBuildSrcProjectPlugin"
+        }
+    }
+}
+```
+
+Then we implement it:
+```kotlin
+class MyBuildSrcProjectPlugin : Plugin<Project> {
+  override fun apply(project: Project) {
+    println("Plugin ${this.javaClass.simpleName} applied on ${project.name}")
+    project.tasks.register("my-buildsrc-project-task") { task ->
+      task.doLast {
+        println("Task ${task.name} executed on ${project.name}")
+      }
+    }
+  }
+}
+```
+
+And we unit test it:
+```kotlin
+@Test
+fun `should add new task to project`() {
+  val project = ProjectBuilder.builder().build()
+  project.plugins.apply("com.rogervinas.my-buildsrc-project-plugin")
+
+  assertThat(project.tasks.findByName("my-buildsrc-project-task")).isNotNull()
+}
+```
+
+As you can see in this example the plugin registers a new task named `my-buildsrc-project-task`.
+
+So now we can use it in any `build.gradle.kts` of `my-gradle-project`:
+```kotlin
+plugins {
+  id("com.rogervinas.my-buildsrc-project-plugin")
+}
+
+allprojects { 
+  apply(plugin = "com.rogervinas.my-buildsrc-project-plugin")
+}
+```
+
+And then we can try it executing `./gradlew my-buildsrc-project-task` and it should print these lines:
+```
+> Configure project :
+Plugin MyBuildSrcProjectPlugin applied on my-gradle-project
+Plugin MyBuildSrcProjectPlugin applied on my-module-1
+Plugin MyBuildSrcProjectPlugin applied on my-module-2
+
+> Task :my-buildsrc-project-task
+Task my-buildsrc-project-task executed on my-gradle-project
+
+> Task :my-module-1:my-buildsrc-project-task
+Task my-buildsrc-project-task executed on my-module-1
+
+> Task :my-module-2:my-buildsrc-project-task
+Task my-buildsrc-project-task executed on my-module-2
+```
+
+Important notes:
+* Apart from unit tests we can also add functional tests to the **buildSrc** module, I omitted them here for simplicity (you can see an example in the [Standalone Project](#standalone-project) section)
+* We cannot define settings plugins on **buildSrc** since **Gradle** 5.x because [Classes from buildSrc are no longer visible to settings scripts](https://docs.gradle.org/current/userguide/upgrading_version_5.html#classes_from_buildsrc_are_no_longer_visible_to_settings_scripts)
 
 ### Standalone Project
 
