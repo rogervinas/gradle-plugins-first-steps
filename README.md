@@ -2,7 +2,7 @@
 
 # First Steps Developing Custom Gradle Plugins
 
-Work in progress!
+![gradle-plugins-first-steps](doc/gradle-plugins-first-steps.png)
 
 ## Documentation
 
