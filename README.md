@@ -2,7 +2,7 @@
 
 # First Steps Developing Custom Gradle Plugins
 
-Not long ago **Gradle** scared me a lot 👻 ... maybe it was because of [Groovy](https://groovy-lang.org/)? who knows ...
+Not long ago **Gradle** scared me a lot 👻 ... maybe it was because of [Groovy](https://groovy-lang.org/)? 😱
 
 But today I am complete in ❤️ with **Gradle**! Please don't tell [Maven](https://maven.apache.org/) 😜
 
@@ -72,7 +72,7 @@ class MyBuildProjectPlugin : Plugin<Project> {
 }
 ```
 
-Then we can apply on all projects (root project and all modules):
+Then for example we can apply the plugin on all projects:
 ```kotlin
 allprojects {
     apply<MyBuildProjectPlugin>()
@@ -166,7 +166,7 @@ Task my-buildsrc-project-task executed on my-module-2
 
 Important notes:
 * Apart from unit tests we can also add functional tests to the **buildSrc** module, I omitted them here for simplicity (you can see an example in the [Standalone Project](#standalone-project) section)
-* We cannot define settings plugins on **buildSrc** since **Gradle** 5.x because [Classes from buildSrc are no longer visible to settings scripts](https://docs.gradle.org/current/userguide/upgrading_version_5.html#classes_from_buildsrc_are_no_longer_visible_to_settings_scripts)
+* We cannot define settings plugins on **buildSrc** since **Gradle** 5.x because [classes from buildSrc are no longer visible to settings scripts](https://docs.gradle.org/current/userguide/upgrading_version_5.html#classes_from_buildsrc_are_no_longer_visible_to_settings_scripts)
 
 ### Standalone Project
 
