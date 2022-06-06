@@ -2,8 +2,6 @@
 
 # First Steps Developing Custom Gradle Plugins
 
-![gradle-plugins-first-steps](doc/gradle-plugins-first-steps.png)
-
 Not long ago **Gradle** scared me a lot 👻 ... maybe it was because of [Groovy](https://groovy-lang.org/) who knows ...
 
 But today I am complete in ❤️ with **Gradle**! Please don't tell [Maven](https://maven.apache.org/) 😜
@@ -19,6 +17,8 @@ Let's follow these steps:
 1. [Create plugins directly in the build script](#build-script)
 2. [Create plugins in the **buildSrc** module](#buildsrc-project)
 3. [Create plugins in a standalone project](#standalone-project)
+
+![gradle-plugins-first-steps](doc/gradle-plugins-first-steps.png)
 
 ### Build Script
 
