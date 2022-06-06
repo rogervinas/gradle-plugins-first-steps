@@ -8,7 +8,7 @@ class MyProjectPlugin : Plugin<Project> {
     println("Plugin ${this.javaClass.simpleName} applied on ${project.name}")
     project.tasks.register("my-project-task") { task ->
       task.doLast {
-        println("Task ${it.name} executed on ${project.name}")
+        println("Task ${task.name} executed on ${project.name}")
       }
     }
   }
