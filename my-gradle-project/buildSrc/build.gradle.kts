@@ -27,3 +27,7 @@ gradlePlugin {
     }
   }
 }
+
+tasks.withType<Test> {
+  useJUnitPlatform()
+}
