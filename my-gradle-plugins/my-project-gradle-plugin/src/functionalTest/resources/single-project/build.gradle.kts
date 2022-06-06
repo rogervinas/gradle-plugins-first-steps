@@ -1,3 +1,3 @@
 plugins {
-  id("com.rogervinas.my-project-gradle-plugin")
+  id("com.rogervinas.my-project-plugin")
 }
