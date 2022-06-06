@@ -1,7 +1,7 @@
 plugins {
-  id("com.rogervinas.my-project-gradle-plugin")
+  id("com.rogervinas.my-project-plugin")
 }
 
 subprojects {
-  apply(plugin="com.rogervinas.my-project-gradle-plugin")
+  apply(plugin="com.rogervinas.my-project-plugin")
 }

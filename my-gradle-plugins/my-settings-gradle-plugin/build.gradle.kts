@@ -22,9 +22,9 @@ dependencies {
 
 gradlePlugin {
   plugins {
-    create("my-settings-gradle-plugin") {
-      id = "com.rogervinas.my-settings-gradle-plugin"
-      implementationClass = "com.rogervinas.MySettingsGradlePlugin"
+    create("my-settings-plugin") {
+      id = "com.rogervinas.my-settings-plugin"
+      implementationClass = "com.rogervinas.MySettingsPlugin"
     }
   }
 }
