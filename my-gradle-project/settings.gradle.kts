@@ -5,12 +5,14 @@ include("my-module-2")
 
 pluginManagement {
   repositories {
-    mavenLocal()
     gradlePluginPortal()
   }
 
-  // We include my-gradle-plugins project as a composite build 👇
-  // We can remove this line and load plugins from mavenLocal if previously we execute task publishToMavenLocal on my-gradle-plugins project
+  // Just to ease development we include my-gradle-plugins project as a composite build 👇
+  // To load plugins from mavenLocal and test a more realistic scenario:
+  // - Execute at least once task publishToMavenLocal on my-gradle-plugins project
+  // - Add mavenLocal() on section pluginManagement > repositories
+  // - Comment includeBuild line below
   includeBuild("../my-gradle-plugins")
 
   plugins {
