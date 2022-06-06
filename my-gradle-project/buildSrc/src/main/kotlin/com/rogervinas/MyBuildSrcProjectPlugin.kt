@@ -6,6 +6,10 @@ import org.gradle.api.Project
 class MyBuildSrcProjectPlugin : Plugin<Project> {
   override fun apply(project: Project) {
     println("Plugin ${this.javaClass.simpleName} applied on ${project.name}")
-    // TODO configure project
+    project.tasks.register("my-buildsrc-project-task") { task ->
+      task.doLast {
+        println("Task ${it.name} executed on ${project.name}")
+      }
+    }
   }
 }

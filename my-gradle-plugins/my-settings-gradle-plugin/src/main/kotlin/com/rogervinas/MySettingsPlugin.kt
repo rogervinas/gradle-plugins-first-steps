@@ -9,7 +9,7 @@ class MySettingsPlugin : Plugin<Settings> {
     settings.gradle.allprojects { project ->
       project.tasks.register("my-settings-task") { task ->
         task.doLast {
-          println("Task my-settings-task executed on ${project.name}")
+          println("Task ${it.name} executed on ${project.name}")
         }
       }
     }
