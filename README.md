@@ -327,7 +327,7 @@ allprojects {
 }
 ```
 
-Once they are ready for production we can publish them to any private or public repository or to [Gradle Plugin Portal](https://docs.gradle.org/current/userguide/publishing_gradle_plugins.html) 🎉
+And finally we can publish them to any private or public repository or to [Gradle Plugin Portal](https://docs.gradle.org/current/userguide/publishing_gradle_plugins.html) 🎉
 
 ## Run this demo
 
