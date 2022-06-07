@@ -299,7 +299,7 @@ To use the standalone plugins **locally** during development we have two alterna
 * Using `includeBuild`: see [Run my-gradle-project using includeBuild](#run-my-gradle-project-using-includebuild)
 * Publishing the plugins locally: see [Run my-gradle-project using mavenLocal](#run-my-gradle-project-using-mavenlocal)
 
-Then we declare which version we want to use just once in `settings.gradle.kts` > pluginManagement > plugins:
+Then we declare which version we want to use just once in `settings.gradle.kts`:
 ```kotlin
 pluginManagement {
   plugins {
