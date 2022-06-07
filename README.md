@@ -24,6 +24,9 @@ Let's follow these steps:
    * [Standalone settings plugin](#standalone-settings-plugin)
    * [Standalone project plugin](#standalone-project-plugin)
    * [Using the Standalone plugins](#using-the-standalone-plugins)
+4. [Run this demo](#run-this-demo)
+   * [Run using includeBuild](#run-my-gradle-project-using-includebuild)
+   * [Run using mavenLocal](#run-my-gradle-project-using-mavenlocal)
 
 ![gradle-plugins-first-steps](doc/gradle-plugins-first-steps.png)
 
