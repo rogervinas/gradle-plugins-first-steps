@@ -299,8 +299,8 @@ Notes:
 ### Using the standalone plugins
 
 To use the standalone plugins **locally** during development we have two alternatives:
-* Using `includeBuild`: see [Run my-gradle-project using includeBuild](#run-my-gradle-project-using-includebuild)
-* Publishing the plugins locally: see [Run my-gradle-project using mavenLocal](#run-my-gradle-project-using-mavenlocal)
+* Using `includeBuild`: see [Run using includeBuild](#run-using-includebuild)
+* Publishing the plugins locally: see [Run using mavenLocal](#run-using-mavenlocal)
 
 Then we declare which version we want to use just once in [settings.gradle.kts](my-gradle-project/settings.gradle.kts):
 ```kotlin
