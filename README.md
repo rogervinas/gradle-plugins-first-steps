@@ -47,7 +47,7 @@ As a first step, we can define plugins directly on our build script. This is eno
 
 #### Build Script settings plugin
 
-To create a settings plugin and apply it in our [settings.gradle.kts](my-gradle-project/settings.gradle.kts#L30):
+To create a settings plugin and apply it in [my-gradle-project > settings.gradle.kts](my-gradle-project/settings.gradle.kts#L30):
 ```kotlin
 class MyBuildSettingsPlugin : Plugin<Settings> {
   override fun apply(settings: Settings) {
@@ -68,7 +68,7 @@ Plugin MyBuildSettingsPlugin applied on my-gradle-project
 
 #### Build Script project plugin
 
-To create a project plugin in our root [build.gradle.kts](my-gradle-project/build.gradle.kts#L22):
+To create a project plugin in [my-gradle-project > build.gradle.kts](my-gradle-project/build.gradle.kts#L22):
 ```kotlin
 class MyBuildProjectPlugin : Plugin<Project> {
     override fun apply(project: Project) {
