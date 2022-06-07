@@ -25,8 +25,8 @@ Let's follow these steps:
    * [Standalone project plugin](#standalone-project-plugin)
    * [Using the Standalone plugins](#using-the-standalone-plugins)
 4. [Run this demo](#run-this-demo)
-   * [Run using includeBuild](#run-my-gradle-project-using-includebuild)
-   * [Run using mavenLocal](#run-my-gradle-project-using-mavenlocal)
+   * [Run using includeBuild](#run-using-includebuild)
+   * [Run using mavenLocal](#run-using-mavenlocal)
 
 ![gradle-plugins-first-steps](doc/gradle-plugins-first-steps.png)
 
@@ -334,7 +334,7 @@ And finally we can publish them to any private or public repository or to [Gradl
 
 ## Run this demo
 
-### Run my-gradle-project using includeBuild
+### Run using includeBuild
 
 1. Edit [my-gradle-project/settings.gradle.kts](my-gradle-project/settings.gradle.kts) and:
 * Remove or comment line `mavenLocal()` in pluginManagement > repositories
@@ -348,7 +348,7 @@ cd my-gradle-project
 
 If you want to know more about `includeBuild` you can read about [Composing builds](https://docs.gradle.org/current/userguide/composite_builds.html#composite_builds)
 
-### Run my-gradle-project using mavenLocal
+### Run using mavenLocal
 
 1. Build and publish my-gradle-plugins locally:
 
