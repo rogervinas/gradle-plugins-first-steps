@@ -6,7 +6,7 @@ Not long ago **Gradle** scared me a lot 👻 ... maybe it was because of [Groovy
 
 But today I am complete in ❤️ with **Gradle**! Please don't tell [Maven](https://maven.apache.org/) 😜
 
-**Gradle** plugins allows us to reuse build logic across different projects, and we can implement them in any JVM compatible language: **Java**, **Kotlin**, **Groovy**, ...
+**Gradle** plugins allows us to reuse **build logic** across different projects, and we can implement them in any JVM compatible language: **Java**, **Kotlin**, **Groovy**, ...
 
 In this demo we will implement basic **Gradle** plugins following the [Developing Custom Gradle Plugins](https://docs.gradle.org/current/userguide/custom_plugins.html) documentation.
 
