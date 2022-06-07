@@ -16,13 +16,14 @@ It will be fun I promise!
 
 Let's follow these steps:
 
-1. [Create plugins directly in the Build Script](#build-script)
+1. [Create plugins in the Build Script](#create-plugins-in-the-build-script)
    * [Build Script settings plugin](#build-script-settings-plugin)
    * [Build Script project plugin](#build-script-settings-plugin)
-2. [Create plugins in the **buildSrc** module](#buildsrc-project)
-3. [Create plugins in a standalone project](#standalone-project)
+2. [Create plugins in the **buildSrc** module](#create-plugins-in-the-buildsrc-module)
+3. [Create plugins in a standalone project](#create-plugins-in-a-standalone-project)
    * [Standalone settings plugin](#standalone-settings-plugin)
    * [Standalone project plugin](#standalone-project-plugin)
+   * [Using the Standalone plugins](#using-the-standalone-plugins)
 
 ![gradle-plugins-first-steps](doc/gradle-plugins-first-steps.png)
 
@@ -37,7 +38,7 @@ tasks.create("hello") {
 
 So we can simply execute `./gradlew hello` and check all the plugins that are applied. 
 
-### Build Script
+### Create plugins in the Build Script
 
 As a first step, we can define plugins directly on our build script. This is enough if we do not have to reuse them outside the build script they are defined in.
 
@@ -91,7 +92,7 @@ Plugin MyBuildProjectPlugin applied on my-module-1
 Plugin MyBuildProjectPlugin applied on my-module-2
 ```
 
-### BuildSrc Project
+### Create plugins in the **buildSrc** module
 
 As a second step, we can define project plugins in a special module named **buildSrc**. All plugins defined there will be **only** visible to every build script within the project.
 
@@ -170,7 +171,7 @@ Notes:
 * Apart from *unit tests* we can also add *functional tests* to the **buildSrc** module. I omitted them here for simplicity (you can see an example in the [Standalone Project](#standalone-project) section)
 * We cannot define settings plugins on **buildSrc** since **Gradle** 5.x because [classes from buildSrc are no longer visible to settings scripts](https://docs.gradle.org/current/userguide/upgrading_version_5.html#classes_from_buildsrc_are_no_longer_visible_to_settings_scripts)
 
-### Standalone Project
+### Create plugins in a standalone project
 
 As a final step, if we want to reuse plugins among all our projects and even share them with the rest of the world, we can create them in a separate project.
 
@@ -292,6 +293,42 @@ Notes:
 * If you check [MyProjectPluginFunctionalTest.kt](my-gradle-plugins/my-project-gradle-plugin/src/functionalTest/kotlin/com/rogervinas/MyProjectPluginFunctionalTest.kt) you will see two tests: one for one single-project and one for one multi-module project.
 * We use static gradle projects saved under `src/functionalTest/resources` but we can also generate gradle projects programmatically, saving them on temporary folders (check [this sample](https://docs.gradle.org/current/userguide/test_kit.html#example_using_gradlerunner_with_java_and_junit)).
 
+### Using the standalone plugins
+
+To use the standalone plugins **locally** during development we have two alternatives:
+* Using `includeBuild`: see [Run my-gradle-project using includeBuild](#run-my-gradle-project-using-includebuild)
+* Publishing the plugins locally: see [Run my-gradle-project using mavenLocal](#run-my-gradle-project-using-mavenlocal)
+
+Then we declare which version we want to use just once in `settings.gradle.kts` > pluginManagement > plugins:
+```kotlin
+pluginManagement {
+  plugins {
+    id("com.rogervinas.my-settings-plugin") version "1.0"
+    id("com.rogervinas.my-project-plugin") version "1.0"
+  }
+}
+```
+
+We apply the settings plugin in `settings.gradle.kts`:
+```kotlin
+plugins {
+  id("com.rogervinas.my-settings-plugin")
+}
+```
+
+We apply the project plugin in any `build.gradle.kts`, for example in the root one applying to `allprojects`:
+```kotlin
+plugins {
+  id("com.rogervinas.my-project-plugin")
+}
+
+allprojects {
+  apply(plugin="com.rogervinas.my-project-plugin")
+}
+```
+
+And then once they are ready for production we can publish them to any private or public repository or to [Gradle Plugin Portal(https://docs.gradle.org/current/userguide/publishing_gradle_plugins.html) 🎉
+
 ## Run this demo
 
 ### Run my-gradle-project using includeBuild
@@ -305,6 +342,8 @@ Notes:
 cd my-gradle-project
 ./gradlew hello
 ```
+
+If you want to know more about `includeBuild` you can read about [Composing builds](https://docs.gradle.org/current/userguide/composite_builds.html#composite_builds)
 
 ### Run my-gradle-project using mavenLocal
 
