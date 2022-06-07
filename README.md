@@ -233,7 +233,7 @@ fun `should add new task to single-project`() {
 Notes:
 * If you check [MySettingsPluginFunctionalTest.kt](my-gradle-plugins/my-settings-gradle-plugin/src/functionalTest/kotlin/com/rogervinas/MySettingsPluginFunctionalTest.kt) you will see two tests: one for one single-project and one for one multi-module project.
 * I have not found any way to *unit test* a settings plugin. For settings plugins there is no helper class like there is `org.gradle.testfixtures.ProjectBuilder` for project plugins. If you know a way please let me know! 🙏
-* We use static gradle projects saved under `src/functionalTest/resources` but we can also generate gradle projects programmatically, saving them on temporary folders (check [this sample](https://docs.gradle.org/current/userguide/test_kit.html#example_using_gradlerunner_with_java_and_junit)).
+* We use static gradle projects saved under [src/functionalTest/resources](my-gradle-plugins/my-settings-gradle-plugin/src/test/resources) but we can also generate gradle projects programmatically, saving them on temporary folders (check [this sample](https://docs.gradle.org/current/userguide/test_kit.html#example_using_gradlerunner_with_java_and_junit)).
 
 #### Standalone project plugin
 
@@ -294,7 +294,7 @@ fun `should add new task to single-project`() {
 
 Notes:
 * If you check [MyProjectPluginFunctionalTest.kt](my-gradle-plugins/my-project-gradle-plugin/src/functionalTest/kotlin/com/rogervinas/MyProjectPluginFunctionalTest.kt) you will see two tests: one for one single-project and one for one multi-module project.
-* We use static gradle projects saved under `src/functionalTest/resources` but we can also generate gradle projects programmatically, saving them on temporary folders (check [this sample](https://docs.gradle.org/current/userguide/test_kit.html#example_using_gradlerunner_with_java_and_junit)).
+* We use static gradle projects saved under [src/functionalTest/resources](my-gradle-plugins/my-project-gradle-plugin/src/test/resources) but we can also generate gradle projects programmatically, saving them on temporary folders (check [this sample](https://docs.gradle.org/current/userguide/test_kit.html#example_using_gradlerunner_with_java_and_junit)).
 
 ### Using the standalone plugins
 
