@@ -30,7 +30,7 @@ Let's follow these steps:
 
 ![gradle-plugins-first-steps](doc/gradle-plugins-first-steps.png)
 
-In this demo we will use a sample multi-module **Gradle** project named `my-gradle-project` with two modules and a custom `hello` task defined as:
+In this demo we will use a sample multi-module **Gradle** project named [my-gradle-project](my-gradle-project) with two modules and a custom [hello](my-gradle-project/build.gradle.kts#L13) task defined as:
 ```kotlin
 tasks.create("hello") {
   doLast {
@@ -47,7 +47,7 @@ As a first step, we can define plugins directly on our build script. This is eno
 
 #### Build Script settings plugin
 
-To create a settings plugin and apply it in our `settings.gradle.kts`:
+To create a settings plugin and apply it in our [settings.gradle.kts](my-gradle-project/settings.gradle.kts#L30):
 ```kotlin
 class MyBuildSettingsPlugin : Plugin<Settings> {
   override fun apply(settings: Settings) {
@@ -68,7 +68,7 @@ Plugin MyBuildSettingsPlugin applied on my-gradle-project
 
 #### Build Script project plugin
 
-To create a project plugin in our root `build.gradle.kts`:
+To create a project plugin in our root [build.gradle.kts](my-gradle-project/build.gradle.kts#L22):
 ```kotlin
 class MyBuildProjectPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -97,13 +97,13 @@ Plugin MyBuildProjectPlugin applied on my-module-2
 
 ### Create plugins in the **buildSrc** module
 
-As a second step, we can define project plugins in a special module named **buildSrc**. All plugins defined there will be **only** visible to every build script within the project.
+As a second step, we can define project plugins in a special module named [**buildSrc**](my-gradle-project/buildSrc). All plugins defined there will be **only** visible to every build script within the project.
 
 But most important, we can add tests! 🤩
 
-First we create **buildSrc** module under `my-gradle-project` using [**Gradle init** and the **kotlin-gradle-plugin** template](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:kotlin_gradle_plugin)
+First we create [**buildSrc**](my-gradle-project/buildSrc) module under [my-gradle-project](my-gradle-project) using [**Gradle init** and the **kotlin-gradle-plugin** template](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:kotlin_gradle_plugin)
 
-We implement the plugin:
+We implement the plugin in [MyBuildSrcProjectPlugin.kt](my-gradle-project/buildSrc/src/main/kotlin/com/rogervinas/MyBuildSrcProjectPlugin.kt):
 ```kotlin
 class MyBuildSrcProjectPlugin : Plugin<Project> {
   override fun apply(project: Project) {
@@ -117,7 +117,7 @@ class MyBuildSrcProjectPlugin : Plugin<Project> {
 }
 ```
 
-We register it in **buildSrc** > `build.gradle.kts`, giving it an `id`:
+We register it in [**buildSrc** > build.gradle.kts](my-gradle-project/buildSrc/build.gradle.kts), giving it an `id`:
 ```kotlin
 gradlePlugin {
     plugins {
@@ -129,7 +129,7 @@ gradlePlugin {
 }
 ```
 
-And we unit test it:
+And we unit test it in [MyBuildSrcProjectPluginTest.kt](my-gradle-project/buildSrc/src/test/kotlin/com/rogervinas/MyBuildSrcProjectPluginTest.kt):
 ```kotlin
 @Test
 fun `should add new task to project`() {
@@ -142,7 +142,7 @@ fun `should add new task to project`() {
 
 As you can see in this example the plugin registers a new task named `my-buildsrc-project-task`.
 
-So now we can use it in any `build.gradle.kts` of `my-gradle-project`:
+So now we can use it in any build script for example in root [my-gradle-project > build.gradle.kts](my-gradle-project/build.gradle.kts) applied to `allprojects`:
 ```kotlin
 plugins {
   id("com.rogervinas.my-buildsrc-project-plugin")
@@ -178,13 +178,13 @@ Notes:
 
 As a final step, if we want to reuse plugins among all our projects and even share them with the rest of the world, we can create them in a separate project.
 
-For this sample I've created a project `my-gradle-plugins` with two independent modules each using [**Gradle init** and the **kotlin-gradle-plugin** template](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:kotlin_gradle_plugin). Other templates can be used: [java-gradle-plugin](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:java_gradle_plugin) or [groovy-gradle-plugin](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:groovy_gradle_plugin) 
+For this sample I've created a project [my-gradle-plugins](my-gradle-plugins) with two independent modules each using [**Gradle init** and the **kotlin-gradle-plugin** template](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:kotlin_gradle_plugin). Other templates can be used: [java-gradle-plugin](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:java_gradle_plugin) or [groovy-gradle-plugin](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:groovy_gradle_plugin) 
 
 I've decided to create one plugin per module, but you could define many plugins in the same module.
 
 #### Standalone settings plugin
 
-We implement the plugin:
+We implement the plugin in [MySettingsPlugin.kt](my-gradle-plugins/my-settings-gradle-plugin/src/main/kotlin/com/rogervinas/MySettingsPlugin.kt):
 ```kotlin
 class MySettingsPlugin : Plugin<Settings> {
     override fun apply(settings: Settings) {
@@ -200,7 +200,7 @@ class MySettingsPlugin : Plugin<Settings> {
 }
 ```
 
-We register it in `build.gradle.kts`, giving it an `id`:
+We register it in [build.gradle.kts](my-gradle-plugins/my-settings-gradle-plugin/build.gradle.kts), giving it an `id`:
 ```kotlin
 gradlePlugin {
     plugins {
@@ -212,7 +212,7 @@ gradlePlugin {
 }
 ```
 
-And we test it in a *functional test*, with real gradle projects saved under `src/functionalTest/resources`:
+And we test it in a *functional test* in [MySettingsPluginFunctionalTest.kt](my-gradle-plugins/my-settings-gradle-plugin/src/functionalTest/kotlin/com/rogervinas/MySettingsPluginFunctionalTest.kt), with real gradle projects saved under [src/functionalTest/resources](my-gradle-plugins/my-settings-gradle-plugin/src/test/resources):
 ```kotlin
 @Test
 fun `should add new task to single-project`() {
@@ -237,7 +237,7 @@ Notes:
 
 #### Standalone project plugin
 
-We implement the plugin:
+We implement the plugin in [MyProjectPlugin.kt](my-gradle-plugins/my-project-gradle-plugin/src/main/kotlin/com/rogervinas/MyProjectPlugin.kt):
 ```kotlin
 class MyProjectPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -251,7 +251,7 @@ class MyProjectPlugin : Plugin<Project> {
 }
 ```
 
-We register it in `build.gradle.kts`, giving it an `id`:
+We register it in [build.gradle.kts](my-gradle-plugins/my-project-gradle-plugin/build.gradle.kts), giving it an `id`:
 ```kotlin
 gradlePlugin {
     plugins {
@@ -263,7 +263,7 @@ gradlePlugin {
 }
 ```
 
-We test it in a *unit test*:
+We test it in a *unit test* in [MyProjectPluginTest.kt](my-gradle-plugins/my-project-gradle-plugin/src/test/kotlin/com/rogervinas/MyProjectPluginTest.kt):
 ```kotlin
 @Test
 fun `should add new task to project`() {
@@ -274,7 +274,7 @@ fun `should add new task to project`() {
 }
 ```
 
-We test it in a *functional test* with real gradle projects saved under `src/functionalTest/resources`:
+We test it in a *functional test* in [MyProjectPluginFunctionalTest.kt](my-gradle-plugins/my-project-gradle-plugin/src/functionalTest/kotlin/com/rogervinas/MyProjectPluginFunctionalTest.kt) with real gradle projects saved under [src/functionalTest/resources](my-gradle-plugins/my-project-gradle-plugin/src/functionalTest/resources):
 ```kotlin
 @Test
 fun `should add new task to single-project`() {
@@ -302,7 +302,7 @@ To use the standalone plugins **locally** during development we have two alterna
 * Using `includeBuild`: see [Run my-gradle-project using includeBuild](#run-my-gradle-project-using-includebuild)
 * Publishing the plugins locally: see [Run my-gradle-project using mavenLocal](#run-my-gradle-project-using-mavenlocal)
 
-Then we declare which version we want to use just once in `settings.gradle.kts`:
+Then we declare which version we want to use just once in [settings.gradle.kts](my-gradle-project/settings.gradle.kts):
 ```kotlin
 pluginManagement {
   plugins {
@@ -312,14 +312,14 @@ pluginManagement {
 }
 ```
 
-We apply the settings plugin in `settings.gradle.kts`:
+We apply the settings plugin in [my-gradle-project > settings.gradle.kts](my-gradle-project/settings.gradle.kts):
 ```kotlin
 plugins {
   id("com.rogervinas.my-settings-plugin")
 }
 ```
 
-We apply the project plugin in any `build.gradle.kts`, for example in the root one applying to `allprojects`:
+We apply the project plugin in any build script for example in [my-gradle-project > build.gradle.kts](my-gradle-project/build.gradle.kts) applied to `allprojects`:
 ```kotlin
 plugins {
   id("com.rogervinas.my-project-plugin")
@@ -336,7 +336,7 @@ And finally we can publish them to any private or public repository or to [Gradl
 
 ### Run using includeBuild
 
-1. Edit [my-gradle-project/settings.gradle.kts](my-gradle-project/settings.gradle.kts) and:
+1. Edit [my-gradle-project > settings.gradle.kts](my-gradle-project/settings.gradle.kts) and:
 * Remove or comment line `mavenLocal()` in pluginManagement > repositories
 * Add or uncomment line `includeBuild("../my-gradle-plugins")`
 
@@ -357,7 +357,7 @@ cd my-gradle-plugins
 ./gradlew publishToMavenLocal
 ```
 
-2. Edit [my-gradle-project/settings.gradle.kts](my-gradle-project/settings.gradle.kts) and:
+2. Edit [my-gradle-project > settings.gradle.kts](my-gradle-project/settings.gradle.kts) and:
 * Add or uncomment line `mavenLocal()` in pluginManagement > repositories
 * Remove or comment line `includeBuild("../my-gradle-plugins")`
 
