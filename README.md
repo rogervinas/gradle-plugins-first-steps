@@ -21,6 +21,8 @@ Let's follow these steps:
    * [Build Script project plugin](#build-script-settings-plugin)
 2. [Create plugins in the **buildSrc** module](#buildsrc-project)
 3. [Create plugins in a standalone project](#standalone-project)
+   * [Standalone settings plugin](#standalone-settings-plugin)
+   * [Standalone project plugin](#standalone-project-plugin)
 
 ![gradle-plugins-first-steps](doc/gradle-plugins-first-steps.png)
 
@@ -97,19 +99,7 @@ But most important, we can add tests! 🤩
 
 First we create **buildSrc** module under `my-gradle-project` using [**Gradle init** and the **kotlin-gradle-plugin** template](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:kotlin_gradle_plugin)
 
-Then we register it in **buildSrc** > `build.gradle.kts`, giving it an `id`:
-```kotlin
-gradlePlugin {
-    plugins {
-        create("my-buildsrc-project-plugin") {
-            id = "com.rogervinas.my-buildsrc-project-plugin"
-            implementationClass = "com.rogervinas.MyBuildSrcProjectPlugin"
-        }
-    }
-}
-```
-
-Then we implement it:
+We implement the plugin:
 ```kotlin
 class MyBuildSrcProjectPlugin : Plugin<Project> {
   override fun apply(project: Project) {
@@ -120,6 +110,18 @@ class MyBuildSrcProjectPlugin : Plugin<Project> {
       }
     }
   }
+}
+```
+
+We register it in **buildSrc** > `build.gradle.kts`, giving it an `id`:
+```kotlin
+gradlePlugin {
+    plugins {
+        create("my-buildsrc-project-plugin") {
+            id = "com.rogervinas.my-buildsrc-project-plugin"
+            implementationClass = "com.rogervinas.MyBuildSrcProjectPlugin"
+        }
+    }
 }
 ```
 
@@ -164,11 +166,131 @@ Task my-buildsrc-project-task executed on my-module-1
 Task my-buildsrc-project-task executed on my-module-2
 ```
 
-Important notes:
+Notes:
 * Apart from *unit tests* we can also add *functional tests* to the **buildSrc** module. I omitted them here for simplicity (you can see an example in the [Standalone Project](#standalone-project) section)
 * We cannot define settings plugins on **buildSrc** since **Gradle** 5.x because [classes from buildSrc are no longer visible to settings scripts](https://docs.gradle.org/current/userguide/upgrading_version_5.html#classes_from_buildsrc_are_no_longer_visible_to_settings_scripts)
 
 ### Standalone Project
+
+As a final step, if we want to reuse plugins among all our projects and even share them with the rest of the world, we can create them in a separate project.
+
+For this sample I've created a project `my-gradle-plugins` with two independent modules each using [**Gradle init** and the **kotlin-gradle-plugin** template](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:kotlin_gradle_plugin). Other templates can be used: [java-gradle-plugin](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:java_gradle_plugin) or [groovy-gradle-plugin](https://docs.gradle.org/current/userguide/build_init_plugin.html#sec:groovy_gradle_plugin) 
+
+I've decided to create one plugin per module, but you could define many plugins in the same module.
+
+#### Standalone settings plugin
+
+We implement the plugin:
+```kotlin
+class MySettingsPlugin : Plugin<Settings> {
+    override fun apply(settings: Settings) {
+        println("Plugin ${this.javaClass.simpleName} applied on ${settings.rootProject.name}")
+        settings.gradle.allprojects { project ->
+            project.tasks.register("my-settings-task") { task ->
+                task.doLast {
+                    println("Task ${task.name} executed on ${project.name}")
+                }
+            }
+        }
+    }
+}
+```
+
+We register it in `build.gradle.kts`, giving it an `id`:
+```kotlin
+gradlePlugin {
+    plugins {
+        create("my-settings-plugin") {
+            id = "com.rogervinas.my-settings-plugin"
+            implementationClass = "com.rogervinas.MySettingsPlugin"
+        }
+    }
+}
+```
+
+And we test it in a *functional test*, with real gradle projects saved under `src/functionalTest/resources`:
+```kotlin
+@Test
+fun `should add new task to single-project`() {
+    val runner = GradleRunner.create()
+    runner.forwardOutput()
+    runner.withPluginClasspath()
+    runner.withArguments("my-settings-task")
+    runner.withProjectDir(File("src/functionalTest/resources/single-project"))
+    val result = runner.build()
+
+    assertThat(result.output).all {
+        contains("Plugin MySettingsPlugin applied on single-project")
+        contains("Task my-settings-task executed on single-project")
+    }
+}
+```
+
+Notes:
+* If you check [MySettingsPluginFunctionalTest.kt](my-gradle-plugins/my-settings-gradle-plugin/src/functionalTest/kotlin/com/rogervinas/MySettingsPluginFunctionalTest.kt) you will see two tests: one for one single-project and one for one multi-module project.
+* I have not found any way to *unit test* a settings plugin. For settings plugins there is no helper class like there is `org.gradle.testfixtures.ProjectBuilder` for project plugins. If you know a way please let me know! 🙏
+* We use static gradle projects saved under `src/functionalTest/resources` but we can also generate gradle projects programmatically, saving them on temporary folders (check [this sample](https://docs.gradle.org/current/userguide/test_kit.html#example_using_gradlerunner_with_java_and_junit)).
+
+#### Standalone project plugin
+
+We implement the plugin:
+```kotlin
+class MyProjectPlugin : Plugin<Project> {
+    override fun apply(project: Project) {
+        println("Plugin ${this.javaClass.simpleName} applied on ${project.name}")
+        project.tasks.register("my-project-task") { task ->
+            task.doLast {
+                println("Task ${task.name} executed on ${project.name}")
+            }
+        }
+    }
+}
+```
+
+We register it in `build.gradle.kts`, giving it an `id`:
+```kotlin
+gradlePlugin {
+    plugins {
+        create("my-project-plugin") {
+            id = "com.rogervinas.my-project-plugin"
+            implementationClass = "com.rogervinas.MyProjectPlugin"
+        }
+    }
+}
+```
+
+We test it in a *unit test*:
+```kotlin
+@Test
+fun `should add new task to project`() {
+  val project = ProjectBuilder.builder().build()
+  project.plugins.apply("com.rogervinas.my-project-plugin")
+
+  assertThat(project.tasks.findByName("my-project-task")).isNotNull()
+}
+```
+
+We test it in a *functional test* with real gradle projects saved under `src/functionalTest/resources`:
+```kotlin
+@Test
+fun `should add new task to single-project`() {
+  val runner = GradleRunner.create()
+  runner.forwardOutput()
+  runner.withPluginClasspath()
+  runner.withArguments("my-project-task")
+  runner.withProjectDir(File("src/functionalTest/resources/single-project"))
+  val result = runner.build()
+
+  assertThat(result.output).all {
+    contains("Plugin MyProjectPlugin applied on single-project")
+    contains("Task my-project-task executed on single-project")
+  }
+}
+```
+
+Notes:
+* If you check [MyProjectPluginFunctionalTest.kt](my-gradle-plugins/my-project-gradle-plugin/src/functionalTest/kotlin/com/rogervinas/MyProjectPluginFunctionalTest.kt) you will see two tests: one for one single-project and one for one multi-module project.
+* We use static gradle projects saved under `src/functionalTest/resources` but we can also generate gradle projects programmatically, saving them on temporary folders (check [this sample](https://docs.gradle.org/current/userguide/test_kit.html#example_using_gradlerunner_with_java_and_junit)).
 
 ## Run this demo
 
