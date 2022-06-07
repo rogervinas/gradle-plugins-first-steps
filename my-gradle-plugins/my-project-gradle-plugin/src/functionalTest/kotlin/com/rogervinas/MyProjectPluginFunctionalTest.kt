@@ -5,8 +5,8 @@ import assertk.assertThat
 import assertk.assertions.contains
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
+import org.junit.jupiter.api.Test
 import java.io.File
-import kotlin.test.Test
 
 class MyProjectPluginFunctionalTest {
 
@@ -33,11 +33,17 @@ class MyProjectPluginFunctionalTest {
   }
 
   private fun gradleRun(taskName: String, projectName: String): BuildResult {
+    val projectDir = projectDir(projectName)
+    cleanProjectDir(projectDir)
     val runner = GradleRunner.create()
     runner.forwardOutput()
     runner.withPluginClasspath()
     runner.withArguments(taskName)
-    runner.withProjectDir(File("src/functionalTest/resources/$projectName"))
+    runner.withProjectDir(projectDir)
     return runner.build()
   }
+
+  private fun projectDir(projectName: String) = File("src/functionalTest/resources/$projectName")
+
+  private fun cleanProjectDir(projectDir: File) = File(projectDir, ".gradle").deleteRecursively()
 }
