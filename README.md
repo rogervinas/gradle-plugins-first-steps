@@ -172,7 +172,7 @@ Task my-buildsrc-project-task executed on my-module-2
 
 Notes:
 * Apart from *unit tests* we can also add *functional tests* to the **buildSrc** module. I omitted them here for simplicity (you can see an example in the [Standalone Project](#create-plugins-in-a-standalone-project) section)
-* We cannot define settings plugins on **buildSrc** since **Gradle** 5.x because [classes from buildSrc are no longer visible to settings scripts](https://docs.gradle.org/current/userguide/upgrading_version_5.html#classes_from_buildsrc_are_no_longer_visible_to_settings_scripts)
+* We cannot define settings plugins on **buildSrc** since **Gradle 5.x** because [classes from buildSrc are no longer visible to settings scripts](https://docs.gradle.org/current/userguide/upgrading_version_5.html#classes_from_buildsrc_are_no_longer_visible_to_settings_scripts)
 
 ### Create plugins in a standalone project
 
