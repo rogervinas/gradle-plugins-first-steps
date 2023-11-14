@@ -1,3 +1,6 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+import org.gradle.api.tasks.testing.logging.TestLogEvent.*
+
 plugins {
   `java-gradle-plugin`
   id("org.jetbrains.kotlin.jvm") version "1.6.21"
@@ -47,4 +50,11 @@ tasks.named<Task>("check") {
 
 tasks.withType<Test> {
   useJUnitPlatform()
+  testLogging {
+    events(PASSED, SKIPPED, FAILED)
+    exceptionFormat = FULL
+    showExceptions = true
+    showCauses = true
+    showStackTraces = true
+  }
 }
