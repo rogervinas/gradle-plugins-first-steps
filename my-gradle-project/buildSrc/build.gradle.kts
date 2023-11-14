@@ -3,7 +3,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 
 plugins {
   `java-gradle-plugin`
-  kotlin("jvm") version "1.6.21"
+  kotlin("jvm") version "1.9.20"
 }
 
 group = "com.rogervinas"
