@@ -28,12 +28,12 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
     - name: Build my-gradle-plugins
-      uses: gradle/gradle-build-action@8cbcb9948b5892387aed077daf6f90e1f0ba5b27
+      uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
       with:
         arguments: build
         build-root-directory: my-gradle-plugins
     - name: Run my-gradle-project
-      uses: gradle/gradle-build-action@8cbcb9948b5892387aed077daf6f90e1f0ba5b27
+      uses: gradle/gradle-build-action@982da8e78c05368c70dac0351bb82647a9e9a5d2
       with:
         arguments: my-settings-task my-project-task
         build-root-directory: my-gradle-project
