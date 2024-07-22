@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    name: build
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: 21
+        distribution: temurin
+
+    - name: Build my-gradle-plugins
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        build-root-directory: my-gradle-plugins
+        arguments: build
+
+    - name: Run my-gradle-project
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        build-root-directory: my-gradle-project
+        arguments: my-settings-task my-project-task
