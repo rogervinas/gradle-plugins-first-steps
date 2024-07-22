@@ -27,13 +27,9 @@ jobs:
         distribution: temurin
 
     - name: Build my-gradle-plugins
-      uses: gradle/actions/setup-gradle@v3
-      with:
-        build-root-directory: my-gradle-plugins
-        arguments: build
+      working-directory: my-gradle-plugins
+      run: ./gradlew build
 
     - name: Run my-gradle-project
-      uses: gradle/actions/setup-gradle@v3
-      with:
-        build-root-directory: my-gradle-project
-        arguments: my-settings-task my-project-task
+      working-directory: my-gradle-project
+      run: ./gradlew my-settings-task my-project-task
