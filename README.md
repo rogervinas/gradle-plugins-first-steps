@@ -1,4 +1,4 @@
-[![CI](https://github.com/rogervinas/gradle-plugins-first-steps/actions/workflows/gradle.yml/badge.svg?branch=main)](https://github.com/rogervinas/gradle-plugins-first-steps/actions/workflows/gradle.yml)
+[![CI](https://github.com/rogervinas/gradle-plugins-first-steps/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/rogervinas/gradle-plugins-first-steps/actions/workflows/ci.yml)
 ![Java](https://img.shields.io/badge/Java-21-blue?labelColor=black)
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.9.20-blue?labelColor=black)
 ![Gradle](https://img.shields.io/badge/Gradle-8.4-blue?labelColor=black)
